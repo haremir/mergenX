@@ -1,9 +1,124 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
-name = "mergenx"
-version = "0.1.0"
-description = "Add your description here"
+name = "harezmi-intelligence"
+version = "1.0.0"
+description = "Production-grade SaaS platform for travel engine optimization and intelligence"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
+authors = [
+    { name = "Harezmi Team", email = "dev@harezmi.ai" },
+]
+license = { text = "MIT" }
+classifiers = [
+    "Environment :: Web Environment",
+    "Framework :: FastAPI",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
 dependencies = [
+    # Web Framework
+    "fastapi==0.109.0",
+    "uvicorn[standard]==0.27.0",
+    
+    # Database & ORM
+    "sqlalchemy[asyncio]==2.0.23",
+    "alembic==1.13.1",
+    "asyncpg==0.29.0",
+    "geoalchemy2==0.14.1",
+    "pgvector==0.2.1",
+    
+    # Configuration
+    "pydantic==2.6.3",
+    "pydantic-settings==2.2.1",
+    "python-dotenv==1.0.0",
+    
+    # Data Validation
+    "pydantic[email]==2.6.3",
+    
+    # Security
+    "python-jose[cryptography]==3.3.0",
+    "passlib[bcrypt]==1.7.4",
+    "bcrypt==4.1.1",
+    
+    # Utilities
+    "httpx==0.26.0",
+    "requests==2.31.0",
     "pandas>=2.3.3",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==7.4.4",
+    "pytest-asyncio==0.23.3",
+    "pytest-cov==4.1.0",
+    "black==24.1.1",
+    "ruff==0.2.1",
+    "mypy==1.8.0",
+    "pre-commit==3.6.0",
+    "ipython==8.21.0",
+]
+
+docs = [
+    "mkdocs==1.5.3",
+    "mkdocs-material==9.5.14",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "pytest==7.4.4",
+    "pytest-asyncio==0.23.3",
+    "pytest-cov==4.1.0",
+    "black==24.1.1",
+    "ruff==0.2.1",
+    "mypy==1.8.0",
+    "pre-commit==3.6.0",
+    "ipython==8.21.0",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py311", "py312", "py313"]
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+select = ["E", "F", "W", "I", "N", "UP", "B", "A"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+asyncio_mode = "auto"
+addopts = "-v --cov=apps --cov=core --cov=services --cov-report=html"
