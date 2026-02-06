@@ -47,7 +47,7 @@ class Settings(BaseSettings):
     # Database Configuration (PostgreSQL + PostGIS + pgvector)
     # ============================================================================
     DATABASE_URL: PostgresDsn = Field(
-        default="postgresql+asyncpg://harezmi:harezmi_dev_password@localhost:5432/harezmi_dev",
+        default="postgresql+asyncpg://harezmi:harezmi_dev_password@127.0.0.1:5433/harezmi_dev",
         description="Async PostgreSQL connection string (postgresql+asyncpg://)"
     )
     
