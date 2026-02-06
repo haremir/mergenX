@@ -2,6 +2,9 @@
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.hatch.build.targets.wheel]
+packages = ["apps", "core", "services", "data_pipeline", "infra", "tests"]
+
 [project]
 name = "harezmi-intelligence"
 version = "1.0.0"
@@ -29,27 +32,22 @@ dependencies = [
     # Web Framework
     "fastapi==0.109.0",
     "uvicorn[standard]==0.27.0",
-    
     # Database & ORM
     "sqlalchemy[asyncio]==2.0.23",
     "alembic==1.13.1",
     "asyncpg==0.29.0",
     "geoalchemy2==0.14.1",
     "pgvector==0.2.1",
-    
     # Configuration
     "pydantic==2.6.3",
     "pydantic-settings==2.2.1",
     "python-dotenv==1.0.0",
-    
     # Data Validation
     "pydantic[email]==2.6.3",
-    
     # Security
     "python-jose[cryptography]==3.3.0",
     "passlib[bcrypt]==1.7.4",
     "bcrypt==4.1.1",
-    
     # Utilities
     "httpx==0.26.0",
     "requests==2.31.0",
