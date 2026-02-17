@@ -52,6 +52,7 @@ dependencies = [
     "httpx==0.26.0",
     "requests==2.31.0",
     "pandas>=2.3.3",
+    "tqdm==4.66.1",
 ]
 
 [project.optional-dependencies]
