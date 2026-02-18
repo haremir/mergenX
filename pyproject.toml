@@ -53,6 +53,8 @@ dependencies = [
     "requests==2.31.0",
     "pandas>=2.3.3",
     "tqdm==4.66.1",
+    "sentence-transformers>=5.2.2",
+    "groq>=1.0.0",
 ]
 
 [project.optional-dependencies]

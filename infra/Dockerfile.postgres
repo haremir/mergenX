@@ -1,0 +1,10 @@
+# Custom PostgreSQL image with PostGIS and pgvector
+FROM postgis/postgis:15-3.4
+
+# Install pgvector extension
+RUN apt-get update \
+    && apt-get install -y \
+        postgresql-15-pgvector \
+    && rm -rf /var/lib/apt/lists/*
+
+# The extensions will be created by migrations or init scripts

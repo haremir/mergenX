@@ -242,9 +242,9 @@ class Hotel(Base, TenantMixin, TimestampMixin):
     
     # AI/ML Features
     embedding: Mapped[Optional[list]] = mapped_column(
-        Vector(384),
+        Vector(768),
         nullable=True,
-        doc="Vector embedding for semantic search (384 dimensions)"
+        doc="Vector embedding for semantic search (768 dimensions)"
     )
     
     # External References
