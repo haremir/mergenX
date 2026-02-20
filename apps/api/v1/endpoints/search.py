@@ -17,12 +17,13 @@ from sqlalchemy import select, cast, Float, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.database import get_db
-from core.models import Hotel
+from core.models import Hotel, Tenant
 from core.config import settings
+from core.security import get_current_tenant
 from services.ai.embeddings import MergenEmbedder
 from services.ai.llm import GroqService
 
-router = APIRouter(tags=["search"])
+router = APIRouter()
 
 
 # ============================================================================
@@ -38,12 +39,6 @@ class HybridSearchRequest(BaseModel):
         max_length=500,
         description="Search query (e.g., 'Denize sıfır antalya oteli')",
         example="Luxury beachfront hotel in Antalya"
-    )
-    
-    tenant_id: str = Field(
-        ...,
-        description="Tenant ID for multi-tenant isolation",
-        example="550e8400-e29b-41d4-a716-446655440000"
     )
     
     limit: int = Field(
@@ -141,6 +136,7 @@ def get_groq_service() -> GroqService:
 )
 async def hybrid_search(
     request: HybridSearchRequest,
+    tenant: Tenant = Depends(get_current_tenant),
     db: AsyncSession = Depends(get_db),
     embedder: MergenEmbedder = Depends(get_embedder),
     groq_service: GroqService = Depends(get_groq_service),
@@ -208,7 +204,7 @@ async def hybrid_search(
         # The <=> operator returns cosine distance, we convert to similarity
         cast(Hotel.embedding.op('<=>')(query_embedding), Float).label("similarity_score"),
     ).where(
-        Hotel.tenant_id == request.tenant_id,
+        Hotel.tenant_id == tenant.id,
         Hotel.embedding.isnot(None),  # Only hotels with embeddings
     )
     
@@ -227,7 +223,7 @@ async def hybrid_search(
     if not rows:
         # No results with embeddings, try without embedding filter
         stmt = select(Hotel).where(
-            Hotel.tenant_id == request.tenant_id
+            Hotel.tenant_id == tenant.id
         ).limit(request.limit)
         
         result = await db.execute(stmt)
