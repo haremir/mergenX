@@ -8,6 +8,7 @@ if sys.platform == "win32":
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from apps.api.v1.endpoints.search import router as search_router
+from apps.api.v1.endpoints.tenants import router as tenants_router
 
 # 2. Uygulamayı Başlat
 app = FastAPI(
@@ -25,6 +26,7 @@ app.add_middleware(
 )
 
 app.include_router(search_router, prefix="/api/v1/search", tags=["Search"])
+app.include_router(tenants_router, prefix="/api/v1/tenants", tags=["Tenants"])
 
 @app.get("/health")
 async def health_check():

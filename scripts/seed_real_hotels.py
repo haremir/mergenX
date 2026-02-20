@@ -38,7 +38,7 @@ from services.ai.embeddings import MergenEmbedder
 
 
 # Tenant ID for the real hotels
-TENANT_ID = "2bcf86a3-94a5-49d9-bbed-6f52e85d312c"
+TENANT_ID = "5b770cd3-b8c8-405e-91fb-64f553a0b0ab"
 
 
 async def get_async_session() -> tuple:
